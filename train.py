@@ -14,7 +14,7 @@ import pyvista as pv
 
 from arguments import ModelParams, OptimizationParams, PipelineParams
 from gaussian_renderer import render
-from gpu_mesh_sampling import gpu_sample, gpu_sampleu
+# from gpu_mesh_sampling import gpu_sample, gpu_sampleu
 from scene import GaussianModel, Scene
 from utils.debug_utils import tensor_to_vtk, analyze_array
 from utils.general_utils import get_expon_lr_func, safe_state, build_scaling_rotation
@@ -112,10 +112,10 @@ def training(
             np.array(gaussians.mins),
             np.array(gaussians.maxes)
         )
-        # probe = pv.PolyData(big_samples)
-        # sampled = probe.sample(gaussians.mesh)
-        # big_gt = sampled.point_data['value']
-        big_gt = gpu_sample(
+        probe = pv.PolyData(big_samples)
+        sampled = probe.sample(gaussians.mesh)
+        big_gt = sampled.point_data['value']
+        # big_gt = gpu_sample(
             gaussians.mesh.dimensions,
             gaussians.mesh.origin,
             gaussians.mesh.spacing,
